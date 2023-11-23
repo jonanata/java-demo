@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+
+    <title>Intelligence Of Care</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> 
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/css/templatemo-style.css">
+    <link rel="stylesheet" href="/assets/css/owl.css">
+	
+
+  </head>
+
+<body class="is-preload">
+
+<script> 
+
+window.chartColors = {
+	red: 'rgb(255, 99, 132)',
+	orange: 'rgb(255, 159, 64)',
+	yellow: 'rgb(255, 205, 86)',
+	green: 'rgb(75, 192, 192)',
+	blue: 'rgb(54, 162, 235)',
+	purple: 'rgb(153, 102, 255)',
+	grey: 'rgb(201, 203, 207)'
+};
+
+optionsData = {
+	responsive: true,
+	legend: {
+		position: 'top',
+	},
+	title: {
+		display: true,
+		text: 'Today Temperature'
+	},
+	scales: {
+		yAxes: [{
+			ticks: {
+				beginAtZero: true
+			}
+		}]
+	}, 
+	maintainAspectRatio: false		
+} 
+
+var jsonData; 
+
+var outdoorCanvas; 
+var userCanvas; 
+var indoorCanvas; 
+
+var d = new Date(); 
+var hr = d.getHours();
+var locationInd = 0; 
+var userInd = 0; 
+
+function getData() { 
+
+	/* 
+	jsonData = {"outdoorTempData": [ 18, 19, 19, 17, 18, 19, 18, 19, 20, 21, 22, 24, 26, 22, 24, 22, 21, 21, 21, 19, 19, 18, 17, 16, 16 ], 
+	"userTempData": [ 35, 35, 35, 35, 35, 35.5, 35.5, 35.5, 36, 36, 36.5, 36, 35, 35.5, 36, 35, 35, 35, 35.5, 35, 35, 35, 35, 35, 35 ], 
+	"indoorTempData": [ 21, 21, 21, 20, 20, 21.5, 21.5, 22, 22, 22, 22, 22, 22, 21, 22, 21, 21, 21, 21, 20.5, 20.5, 20.5, 20.5, 20, 20 ], 
+	"minTemp": 20, "maxTemp": 22, "nextTempSign": 1, "nextTemp": 22, "devices": ["AC 2", "TV 1"], "profile": "Jonathan"}; */  
+	
+	$.post("http://localhost:80/api/auth/dashboard/getData",
+	{
+		//apikey: "10011-0246d92c-c8ae-4d62-925c-3833195560c0"
+	},
+	function(data, status){
+		
+		//console.log(data.userTempData); 
+		
+		jsonData = data; 
+		
+		console.log(jsonData.calTmps); 
+		
+		console.log("genData(0)"); 
+		genData(locationInd, userInd); 
+		
+		var locs = jsonData.calTmps.locations; 
+		
+		for(var i = 0; i < locs.length; i++) { 
+		
+			var location = locs[i]; 
+
+			var $button = $('<button class="btn btn-small" onclick="genData(' + i + ', 0)">' + location.details + '</button>'); 
+
+			$('#locationBtns').append($button); 
+			
+		} 
+		
+	});
+
+} 
+
+function genData(l, u) { 
+
+	locationInd = l; 
+	userInd = u; 
+
+	console.log(jsonData.calTmps.locations[locationInd])
+
+	var d = jsonData.calTmps.locations[locationInd]; 
+
+	var userTempData = cleanTempDataByHour(d.userTempData[userInd], hr); 
+	var indoorTempData = cleanTempDataByHour(d.indoorTempData, hr); 
+
+	optionsData.title.text = 'Outdoor Temperature Forecast'; 
+	outdoorCanvas = genTempChart("outdoorCanvas", jsonData.outdoorTempData, optionsData); 
+	
+	optionsData.title.text = 'User Temperature'; 
+	userCanvas = genTempChart("userCanvas", userTempData, optionsData); 
+	
+	optionsData.title.text = 'Indoor Temperature'; 
+	indoorCanvas = genTempChart("indoorCanvas", indoorTempData, optionsData); 
+	
+	$("#minTemp").html(d.minTemp); 
+	$("#maxTemp").html(d.maxTemp); 
+	$("#indoorTemp").html(d.avgTemp); 
+	//$("#indoorTemp").html(indoorTempData[hr]); 
+	$("#nextTempSign").html((d.nextTempSign == 0) ? "Turn down to" : "Turn Up to"); 
+	$("#nextTemp").html(d.nextTemp); 
+	$("#userTemp").html(d.userTempLatest[0]); 
+	
+	$("#device1").html(jsonData.devices[0]); 
+	$("#device2").html(jsonData.devices[1]); 
+	$("#profile").html(jsonData.profile); 
+
+} 
+
+function genTempChart(id, data, opts) { 
+
+	var color = Chart.helpers.color;
+	var barChartData = {
+		labels: ['12:00am', '01:00am', '02:00am', '03:00am', '04:00am', '05:00am', '06:00am', '07:00am', '08:00am', '09:00am', '10:00am', '11:00am', '12:00pm', 
+		'01:00pm', '02:00pm', '03:00pm', '04:00pm', '05:00pm', '06:00pm', '07:00pm', '08:00pm', '09:00pm', '10:00pm', '11:00pm'],
+		datasets: [{
+			label: 'Degree',
+			backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+			borderColor: window.chartColors.red,
+			borderWidth: 1, 
+			data: data 
+		}]
+
+	}; 
+
+	return new Chart(document.getElementById(id).getContext('2d'), {
+		type: 'bar',
+		data: barChartData, 
+		options: opts   
+	}); 
+
+} 
+
+function cleanTempDataByHour(data, currentHour) { 
+
+	return data.fill(0, currentHour + 1); 
+
+} 
+
+window.onload = function() { 
+
+	getData(); 
+
+};
+
+
+</script> 
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+      <!-- Main -->
+        <div id="main">
+          <div class="inner">
+
+            <!-- Header -->
+            <header id="header">
+              <div class="logo">
+                <a href="index.html">Dashboard</a>
+              </div> 
+			  <div class="profile">
+                Hi! Jonathan 
+              </div>
+			  
+            </header>
+
+            <!-- Services -->
+            <section class="services">
+              <div class="container-fluid">
+			    <div id="locationBtns"></div>
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="service-item first-item">
+                      <h4>Suggested Temperature Ranges</h4>
+                      <p><span id="minTemp"></span>c - <span id="maxTemp"></span>c</p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="service-item second-item">
+                      <h4>Indoor Temperature</h4>
+                      <p><span id="indoorTemp"></span>c</p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="service-item third-item">
+                      <h4>Next Temperature Adjustments</h4>
+                      <p><span id="nextTempSign"></span> <span id="nextTemp"></span>c</p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="service-item fourth-item">
+                      <h4>User Temperature</h4>
+                      <p><span id="userTemp"></span>c</p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="service-item fivth-item">
+                      <h4>Device</h4>
+                      <p><span id="device1"></span></p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="service-item sixth-item">
+                      <h4>Device</h4>
+                      <p><span id="device2"></span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section> 
+
+			<!-- User Temperature -->
+            <section class="main-banner">
+              <div class="container-fluid">
+                <canvas id="userCanvas"></canvas>
+              </div>
+            </section> 
+			
+			<!-- Indoor Temperature -->
+            <section class="main-banner">
+              <div class="container-fluid">
+                <canvas id="indoorCanvas"></canvas>
+              </div>
+            </section> 
+
+			<!-- Outdoor Temperature -->
+            <section class="main-banner">
+              <div class="container-fluid">
+                <canvas id="outdoorCanvas"></canvas>
+              </div>
+            </section>
+
+          </div>
+        </div>
+
+      <!-- Sidebar -->
+         <div id="sidebar">
+
+          <div class="inner">
+  
+            <!-- Menu -->
+           <nav id="menu">
+              <ul>
+                <li><a href="index.html">Dashboard</a></li>
+              </ul>
+            </nav>
+
+            <!-- Footer -->
+            <footer id="footer">
+              <p class="copyright">Copyright &copy; 2021 Intelligence of Care </p>
+            </footer>
+            
+          </div>
+        </div> 
+        
+   </div>
+
+	<!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/assets/js/browser.min.js"></script>
+    <script src="/assets/js/breakpoints.min.js"></script>
+    <script src="/assets/js/transition.js"></script>
+    <script src="/assets/js/owl-carousel.js"></script>
+    <script src="/assets/js/custom.js"></script> 
+
+  </body>
+
+</html>

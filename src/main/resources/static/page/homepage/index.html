@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
+
+    <title>Intelligence Of Care</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> 
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/css/templatemo-style.css">
+    <link rel="stylesheet" href="/assets/css/owl.css">
+	
+
+  </head>
+
+<body class="is-preload">
+
+<script> 
+
+window.onload = function() { 
+	
+	$("#loginBtn").click(function(){
+		
+		var username = $("#username").val().trim();
+        var password = $("#pw").val().trim();
+
+        if( username != "" && password != "" ){
+            $.ajax({
+                url:'/api/public/login',
+                type:'post',
+                data:{username:username,password:password},
+                success:function(data){
+                	
+                	console.log(data); 
+                	
+                    var msg = "";
+                    if(data.login == 1){
+                        window.location = "/page/auth/dashboard";
+                    }else{
+                        msg = "Invalid username and password!";
+                    }
+                    $("#message").html(msg);
+                    
+                }
+            });
+        }
+	}); 
+}
+
+</script> 
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+      <!-- Main -->
+        <div id="main">
+          <div class="inner">
+
+            <!-- Header -->
+            <header id="header" style="background-color:#ffffff;">
+              <img src="/assets/images/logo_green_letterhead_v.png"/>
+              <div class="logo">
+                
+              </div> 
+			  <div class="profile">
+              </div>
+			  
+            </header>
+
+            <!-- Services -->
+
+			<!-- User Temperature -->
+            <section >
+              <div class="container-fluid">
+                Welcome to Customer Center <br/> 
+                <input placeholder="Username" id="username" name="username"/> <br/>
+                <input placeholder="Password" type="password" id="pw" name="pw"/> <br/>
+                <button id="loginBtn">Login</button>
+                <div id="message"></div>
+              </div>
+            </section> 
+            
+            <p class="copyright">Copyright &copy; 2021 Intelligence of Care </p>
+
+          </div>
+        </div> 
+        
+    </div>
+
+	<!-- Scripts -->
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/assets/js/browser.min.js"></script>
+    <script src="/assets/js/breakpoints.min.js"></script>
+    <script src="/assets/js/transition.js"></script>
+    <script src="/assets/js/owl-carousel.js"></script>
+    <script src="/assets/js/custom.js"></script> 
+
+  </body>
+
+</html>
