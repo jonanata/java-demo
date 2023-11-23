@@ -31,7 +31,7 @@ public class ExtDataController extends BaseController {
 		
 		try { 
 			
-			String url = "https://api.openweathermap.org/data/2.5/onecall?lat=22.30&lon=114.18&exclude=current,minutely,daily,alerts&units=metric&appid=2a49cfebd8dbdfaa6383e76156f7eca9"; 
+			String url = "https://api.openweathermap.org/data/2.5/onecall?lat=22.30&lon=114.18&exclude=current,minutely,daily,alerts&units=metric&appid=your_osm_id"; 
 
 			temperatureService.updateHourlyOutdoorTemperature(JsonUtils.toObj(restTemplate.getForEntity(url, String.class).getBody())); 
 			
