@@ -30,7 +30,7 @@ public class AIController extends BaseController {
 		
 		try { 
 			
-			//rsp.put("data", aIService.calDeviceTemperature(0)); 
+			rsp.put("data", aIService.calDeviceTemperature(0)); 
 			
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block
@@ -57,7 +57,7 @@ public class AIController extends BaseController {
 		
 		try { 
 			
-			//rsp.put("data", aIService.calDeviceTemperature(1)); 
+			rsp.put("data", aIService.calDeviceTemperature(1)); 
 			
 		} catch (Throwable e) {
 			// TODO Auto-generated catch block

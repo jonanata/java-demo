@@ -38,9 +38,7 @@ public class TemperatureDAO extends BaseDAO {
 				+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
 		
 		for(Map<String, Object> d : hourlyData) { 
-			
-			//d.forEach((key, value) -> System.out.println(key + ":" + value)); 
-			
+
 			int dt = (int) d.get("dt"); 
 			
 			db.update("delete from owm_hourly where dt = ? and lat = ? and lon = ? and timezone = ? ", dt, lat, lon, timezone); 

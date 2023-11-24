@@ -35,14 +35,7 @@ public class DashboardController extends BaseController {
 		int isOk = 1;
 		String msg = "";
 		HashMap<String, Object> rsp = new HashMap<String, Object>(); 
-		
-		/* 
-		{"outdoorTempData": [ 18, 19, 19, 17, 18, 19, 18, 19, 20, 21, 22, 24, 26, 22, 24, 22, 21, 21, 21, 19, 19, 18, 17, 16, 16 ], 
-	"userTempData": [ 35, 35, 35, 35, 35, 35.5, 35.5, 35.5, 36, 36, 36.5, 36, 35, 35.5, 36, 35, 35, 35, 35.5, 35, 35, 35, 35, 35, 35 ], 
-	"indoorTempData": [ 21, 21, 21, 20, 20, 21.5, 21.5, 22, 22, 22, 22, 22, 22, 21, 22, 21, 21, 21, 21, 20.5, 20.5, 20.5, 20.5, 20, 20 ], 
-	"minTemp": 20, "maxTemp": 22, "nextTempSign": "Turn Up to", "nextTemp": 22, "devices": ["AC 2", "TV 1"], "profile": "Jonathan"} 
-		 */
-		
+
 		try { 
 			
 			int uid = getCurrentUserId(); 

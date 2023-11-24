@@ -29,9 +29,7 @@ public class PublicController extends BaseController {
 		int isOk = 1;
 		String msg = "";
 		HashMap<String, Object> rsp = new HashMap<String, Object>(); 
-		
-		log.info("login username / password : " + username + " / " + password);
-		
+
 		try { 
 			
 			rsp.put("login", accountService.login(username, password)); 

@@ -20,13 +20,6 @@ public abstract class BaseDAO {
 		return DataAccessUtils.singleResult(db.query(sql, args, SingleColumnRowMapper.newInstance(elementType) ));
 	} 
 	
-//	public <T> T getObject(JdbcTemplate db, String sql, Class<T> elementType, T defVal, @Nullable Object... args) {
-//
-//		T r = DataAccessUtils.singleResult(db.query(sql, args, SingleColumnRowMapper.newInstance(elementType) )); 
-//		
-//		return (r == null) ? defVal : DataAccessUtils.singleResult(db.query(sql, args, SingleColumnRowMapper.newInstance(elementType) ));
-//	} 
-
 	public int updateHistory(String org, String history, String idK, int idV) {
 
 		return db.update("insert into " + history + " (select null, o.* from " + org + " o where " + idK + " = " + idV + ")");

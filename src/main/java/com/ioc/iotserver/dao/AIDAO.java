@@ -36,7 +36,7 @@ public class AIDAO extends BaseDAO {
 	public Map<String, Object> calDeviceTemperature(int uId, String dateStr, int hr) throws Throwable { 
 				
 		List<Map<String, Object>> locations = new ArrayList<Map<String, Object>>(); 
-		//Map<String, Object> calTmps = Map.of("locations", locations); 
+		Map<String, Object> calTmps = Map.of("locations", locations); 
 		
 		String timezone = db.queryForObject("select timezone from account where uId = ? ", String.class, uId); 
 		
@@ -135,17 +135,10 @@ public class AIDAO extends BaseDAO {
 			locationData.put("userTempData", userTempData); locationData.put("userTempLatest", userTempLatest); 
 			
 			locations.add(locationData); 
-			
-			/* 
-			locations.add(
-					Map.of("lId", lId, "details", details, "avgTemp", avgTemp, "maxTemp", maxTemp, "minTemp", minTemp, "nextTempSign", nextTempSign, "nextTemp", nextTemp, 
-					"dIds", dIds, 
-					"indoorTempData", indoorTempData, "userTempData", userTempData)); */  
-			
-		}
 
-		return null; 
-		//return calTmps; 
+		} 
+
+		return calTmps; 
 		
 	} 
 	

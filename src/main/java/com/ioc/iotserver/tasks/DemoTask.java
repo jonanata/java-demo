@@ -30,10 +30,7 @@ public class DemoTask {
 	private static String apikey = "10011-0246d92c-c8ae-4d62-925c-3833195560c0"; 
 	
 	private DecimalFormat f = new DecimalFormat("##.00"); 
-	
-	//{{domain}}/api/auth/temperature/addDeviceTemperature?apikey={{apikey}}&dId=2&degree=36.2 
-	//{{domain}}/api/auth/temperature/addWristbandTemperature?apikey={{apikey}}&wId=2&degree=36.2 
-	
+
 	@Scheduled(cron = "0 * * * * ?")
 	public void addDeviceTemperature() { 
 		
@@ -63,15 +60,7 @@ public class DemoTask {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		
-		/* Map<String, Object> params = Map.of("apikey", apikey, "dId", 2, "degree", getRandoDouble(18, 30)); 
-		
-		RestTemplate restTemplate = new RestTemplate();  
-		
-		String resp = restTemplate.postForObject(url, new HttpEntity<>(params, null), String.class); */ 
-		
-		
-		
+
 	} 
 	
 	@Scheduled(cron = "0 * * * * ?")
@@ -102,13 +91,7 @@ public class DemoTask {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		
-		/* Map<String, Object> params = Map.of("apikey", apikey, "wId", 2, "degree", getRandoDouble(35.5, 37)); 
-		
-		RestTemplate restTemplate = new RestTemplate();  
-		
-		String resp = restTemplate.postForObject(url, new HttpEntity<>(params, null), String.class); */ 
-		
+
 	} 
 	
 	private double getRandoDouble(double min, double max) { 

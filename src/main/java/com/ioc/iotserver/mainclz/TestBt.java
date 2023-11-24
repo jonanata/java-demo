@@ -40,39 +40,7 @@ public class TestBt {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
-		
-		/* try { 
-			// get the Bluetooth Manager
-	        BluetoothManager manager = new BluetoothManagerBuilder()
-	                .withTinyBTransport(false)
-	                .withBlueGigaTransport("^*.$")
-	                .withDiscovering(true)
-	                .build();
-	        
-	     // define a URL pointing to the target characteristic
-	        URL url = new URL(urlWinBB);
-	        // subscribe to the characteristic notification
-	        manager.getCharacteristicGovernor(url, true).addValueListener(value -> {
-	            System.out.println("Temperature : " + value[0]);
-	        });
-	        
-	        // do your other stuff
-	        Thread.sleep(10000); 
-		} catch(Throwable e) { 
-			
-			e.printStackTrace();
-		} */ 
 
-		/* 
-		 * // define a URL pointing to the target characteristic
-	        URL url = new URL(urlStr); 
-	        // subscribe to the characteristic notification
-	        manager.getCharacteristicGovernor(url.copyWith("00001809-0000-1000-8000-00805f9b34fb", "00008801-0000-1000-8000-00805f9b34fb"), true).addValueListener(value -> {
-	            System.out.println("Temperature: " + value[0]);
-	        });
-		 * 
-		 */
-		
 	}
 
 }

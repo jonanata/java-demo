@@ -13,9 +13,7 @@ import org.springframework.stereotype.Component;
 public class AccountDAO extends BaseDAO { 
 	
 	public String getApiKey(String username, String password) { 
-		
-		logger.info("getApiKey username / password : " + username + " / " + password);
-		
+
 		return getObject(db, "select apikey from account where username = ? and password = ? and status = 1 ", String.class, username, password);
 	}
 	
